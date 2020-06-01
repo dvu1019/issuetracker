@@ -1,91 +1,147 @@
-var appIsOpen = true; 
-var issues = [];
-var closeIssues = [];
+const listIssuesButton = document.getElementById('listIssuesButton');
+const issuesList = document.getElementById('issuesList');
 
-var IssueForm = function(nameOfissue, description, issueSeverity) {
-    var issueName = nameOfissue
-    var issueDescription = description
-    var severity = issueSeverity;
-    if(severity ==="1") {
-        severity = "Low"
-    } else if(severity ==="2") {
-        severity = "Med"
-    } else if(severity ==="3") {
-        severity = "High"
-    }
+listIssuesButton.addEventListener('click', () => {
+    issuesList.innerHTML = "NEW FUCKING ISSUES";
+});
 
-    var issueFields = {
-        id :"",
+
+let issues = [];   
+let closeIssues = [];
+
+
+
+let IssueForm = (nameOfissue, description, issueSeverity) => {
+    const issueName = nameOfissue
+    const issueDescription = description
+    const severity = issueSeverity.toLowerCase();
+
+    const issueFields = {
+        id : issues.length + 1,
         Name: issueName,
         Description: issueDescription,
         Severity: severity,
         Status: "unresolved",
         Assignment: "unassigned"
     }
-
-    if (issues.length < 1) {
-        var id = 1;
-        console.log("Issues queue is empty");
-        console.log(id);
-        issueFields.id = id;
+    
+    if(issueFields.Severity != "3" && issueFields.Severity != "2" && issueFields.Severity != "1") {
+    console.log("Severity options must be a number 1 -3.  3 = high, 2 = med, or 1 = low");
+    console.log("Issues was not added");
     } else {
-        id = issues.length + 1;
-        issueFields.id = id;
-        console.log(id);
+        issues.push(issueFields);
+        console.log("Issue has been added");
     }
-
-    console.log(issueFields);
-    return issueFields;
-}
-
-// Passes arguments to issueFormFunction and pushes issues in the list of unresolveds
-var fillOutIssueFormAndAddToQueue = function(nameOfissue, description, issueSeverity) {
-    issues.push(IssueForm(nameOfissue, description, issueSeverity));
-    for (i = 0; i < issues.length; i++) {
-        console.log(issues[i]);
-}
 }
 
 // All issues
-var listAllIssues = function() {
-    for (i = 0; i < issues.length; i++) {
-        console.log(issues[i]);
+const listAllIssues = () => {
+    for(let allIssues in listAllIssues){
+        console.log(allIssues);
+    }
 }
 
-//List "Open" (unresolved) Issues, sorted by severity ************
-var listOpenIssues = function() {
-    var unresolved = [];
-    for(var i = 0; i < issues.length; i++){
-        if(issues[i].Status === "unresolved") {
-            unresolved.push(issues[i]);
-        }
+// Sort issues by severity
+const issuesBySeverity = (a, b) => {
+    if (b.Severity > a.Severity) {
+      return 1;
+    } else if (a.Severity > b.Severity) {
+      return -1;
+    } else {
+      return 0;
     }
+  }
 
-    for(var i = 0; i < unresolved.length; i++){
-        if(unresolved[i].Severity === "High") {
-            console.log(unresolved[i]);
-        }
-    }
 
-    for(var i = 0; i < unresolved.length; i++){
-        if(unresolved[i].Severity === "Med") {
-            console.log(unresolved[i]);
-        }
-    }
+//List "Open" (unresolved) Issues, sorted by severity 
+const listOpenIssues = () =>{
+    let unresolved = issues.filter(function(issue) {
+        return issue.Status === "unresolved"             
+     });
 
-    for(var i = 0; i < unresolved.length; i++){
-        if(unresolved[i].Severity === "Low") {
-            console.log(unresolved[i]);
-        }
-    }    
+    let sortedIssues = unresolved.sort(issuesBySeverity); 
+    console.log(sortedIssues);
+    
 }
+
 
 //Search for issue by ID 
-
-var searchById = function(id) {
-    for(var i = 0; i < issues.length; i++){
-        if(issues[i].id === id) {
-            console.log(issues[i]);
+const searchById = id => {
+    for(let issue of issues ){
+        if(issue.id === id) {
+            console.log(issue);
+            return issue;
         }
+    }
 }
 
+//Close a issue 
+const closeIssueById = id => {
+    let indexOfIssue;
+    let removeIssueFromList; 
+    for(let issue of issues ){
+        if(issue.id === id) {
+            indexOfIssue = issues.findIndex(issue => issue.id === id);
+        }
+    }
+    console.log("Issue being closed");
+    console.log(issues[indexOfIssue]);
+
+    console.log("Index of this issue is");
+    console.log(indexOfIssue);
+    
+    console.log("Closing status of Issue") ;
+    issues[indexOfIssue].Status = "closed";
+    
+    
+    console.log("removing issues from main list");
+    removeIssueFromList = issues.splice(indexOfIssue,1);
+    console.log(removeIssueFromList);
+    
+    console.log("pushing issue to new close list");
+    closeIssues.push = removeIssueFromList;
+    
+    console.log(closeIssues);
+}
+
+const findIndexOfIssue = id => {
+    let indexOfIssue;
+    for(let issue of issues ){
+        if(issue.id === id) {
+            indexOfIssue = issues.findIndex(issue => issue.id === id);
+        }
+    }
+    return indexOfIssue;
+}
+
+const updateDescription = (id , description) => {
+    issues[findIndexOfIssue(id)].Description = description;
+    console.log("****** New Description was Added *********")
+    console.log(issues[findIndexOfIssue(id)]);
+}
+
+
+const assignTicket = (id , assignment) => {
+    let indexOfIssue;
+    for(let issue of issues ){
+        if(issue.id === id) {
+            indexOfIssue = issues.findIndex(issue => issue.id === id);
+        }
+    }
+    issues[indexOfIssue].Assignment = assignment;
+    console.log("****** New Assignment was Added *********")
+    console.log(issues[indexOfIssue]);
+}
+
+IssueForm("Houston", "Houston we have a problem", "1")
+IssueForm("Austin", "Austin we have a problem", "Ben a bitch")
+IssueForm("Dallas", "Dallas we have a problem", "Hard")
+IssueForm("mexico", "mexico we have a problem", "3")
+
+IssueForm("Ben", "Ben we have a problem", "2")
+IssueForm("David", "David we have a problem", "2")
+IssueForm("Sarah", "Sarah we have a problem", "1")
+  
+searchById(3);
+updateDescription(3, "THERE WAS NO PROBLEMS")
+assignTicket(3, "David")
