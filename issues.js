@@ -2,7 +2,7 @@ const listIssuesButton = document.getElementById('listIssuesButton');
 const issuesList = document.getElementById('issuesList');
 
 listIssuesButton.addEventListener('click', () => {
-    issuesList.innerHTML = "NEW FUCKING ISSUES";
+    issuesList.innerHTML = issues[0].id + "--" + issues[0].Name;
 });
 
 
