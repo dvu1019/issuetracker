@@ -1,15 +1,22 @@
 const listIssuesButton = document.getElementById('listIssuesButton');
 const issuesList = document.getElementById('issuesList');
 
-listIssuesButton.addEventListener('click', () => {
-    issuesList.innerHTML = issues[0].id + "--" + issues[0].Name;
-});
-
-
 let issues = [];   
 let closeIssues = [];
 
-
+listIssuesButton.addEventListener('click', () => {
+    for(let things of issues) {
+        issuesList.insertAdjacentHTML("afterend", 
+        "<p>" + "Ticket ID: " + things.id +"</p>" +
+        "<p>" + "Ticket Name: " + things.name +"</p>" +
+        "<p>" + "Description: " + things.description +"</p>" +
+        "<p>" + "Severity: " + things.severity +"</p>" +
+        "<p>" + "Status: " + things.status +"</p>" +
+        "<p>" + "Assignment: " + things.assignment +"</p>" +
+        "<hr>"
+        );
+    }
+});
 
 let IssueForm = (nameOfissue, description, issueSeverity) => {
     const issueName = nameOfissue
@@ -18,14 +25,14 @@ let IssueForm = (nameOfissue, description, issueSeverity) => {
 
     const issueFields = {
         id : issues.length + 1,
-        Name: issueName,
-        Description: issueDescription,
-        Severity: severity,
-        Status: "unresolved",
-        Assignment: "unassigned"
+        name: issueName,
+        description: issueDescription,
+        severity: severity,
+        status: "unresolved",
+        assignment: "unassigned"
     }
     
-    if(issueFields.Severity != "3" && issueFields.Severity != "2" && issueFields.Severity != "1") {
+    if(issueFields.severity != "3" && issueFields.severity != "2" && issueFields.severity != "1") {
     console.log("Severity options must be a number 1 -3.  3 = high, 2 = med, or 1 = low");
     console.log("Issues was not added");
     } else {
@@ -36,16 +43,16 @@ let IssueForm = (nameOfissue, description, issueSeverity) => {
 
 // All issues
 const listAllIssues = () => {
-    for(let allIssues in listAllIssues){
+    for(const allIssues of issues){
         console.log(allIssues);
     }
 }
 
 // Sort issues by severity
 const issuesBySeverity = (a, b) => {
-    if (b.Severity > a.Severity) {
+    if (b.severity > a.severity) {
       return 1;
-    } else if (a.Severity > b.Severity) {
+    } else if (a.severity > b.severity) {
       return -1;
     } else {
       return 0;
@@ -56,7 +63,7 @@ const issuesBySeverity = (a, b) => {
 //List "Open" (unresolved) Issues, sorted by severity 
 const listOpenIssues = () =>{
     let unresolved = issues.filter(function(issue) {
-        return issue.Status === "unresolved"             
+        return issue.status === "unresolved"             
      });
 
     let sortedIssues = unresolved.sort(issuesBySeverity); 
@@ -91,7 +98,7 @@ const closeIssueById = id => {
     console.log(indexOfIssue);
     
     console.log("Closing status of Issue") ;
-    issues[indexOfIssue].Status = "closed";
+    issues[indexOfIssue].status = "closed";
     
     
     console.log("removing issues from main list");
@@ -115,7 +122,7 @@ const findIndexOfIssue = id => {
 }
 
 const updateDescription = (id , description) => {
-    issues[findIndexOfIssue(id)].Description = description;
+    issues[findIndexOfIssue(id)].description = description;
     console.log("****** New Description was Added *********")
     console.log(issues[findIndexOfIssue(id)]);
 }
@@ -128,7 +135,7 @@ const assignTicket = (id , assignment) => {
             indexOfIssue = issues.findIndex(issue => issue.id === id);
         }
     }
-    issues[indexOfIssue].Assignment = assignment;
+    issues[indexOfIssue].assignment = assignment;
     console.log("****** New Assignment was Added *********")
     console.log(issues[indexOfIssue]);
 }
