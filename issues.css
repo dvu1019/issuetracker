@@ -18,3 +18,7 @@ p {
 h2 {
     color: #fff;
 }
+
+#ticketForm {
+    text-align: center;
+}

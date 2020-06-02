@@ -1,22 +1,59 @@
 const listIssuesButton = document.getElementById('listIssuesButton');
+const createIssues = document.getElementById('createIssues');
 const issuesList = document.getElementById('issuesList');
+const ticketName = document.getElementById('ticketName');
+const submitButton = document.getElementById('submitButton');
 
 let issues = [];   
 let closeIssues = [];
 
 window.addEventListener('load', () => {
-    for(let things of issues) {
+    for(let issue of issues) {
         issuesList.insertAdjacentHTML("afterend", 
-        "<p>" + "Ticket ID: " + things.id +"</p>" +
-        "<p>" + "Ticket Name: " + things.name +"</p>" +
-        "<p>" + "Description: " + things.description +"</p>" +
-        "<p>" + "Severity: " + things.severity +"</p>" +
-        "<p>" + "Status: " + things.status +"</p>" +
-        "<p>" + "Assignment: " + things.assignment +"</p>" +
+        "<p>" + "Ticket ID: " + issue.id +"</p>" +
+        "<p>" + "Ticket Name: " + issue.name +"</p>" +
+        "<p>" + "Description: " + issue.description +"</p>" +
+        "<p>" + "Severity: " + issue.severity +"</p>" +
+        "<p>" + "Status: " + issue.status +"</p>" +
+        "<p>" + "Assignment: " + issue.assignment +"</p>" +
         "<hr>"
         );
     }
 });
+
+submitButton.addEventListener('click', () => {
+    const issueName = document.getElementById("ticketName").value;
+    const issueDescription = document.getElementById("ticketDescription").value;
+    const severity = document.getElementById("ticketSeverity").value;
+
+    const issueFields = {
+        id : issues.length + 1,
+        name: issueName,
+        description: issueDescription,
+        severity: severity,
+        status: "unresolved",
+        assignment: "unassigned"
+    }
+    
+    if(issueFields.severity != "3" && issueFields.severity != "2" && issueFields.severity != "1") {
+    alert("Severity options must be a number 1 -3.  3 = high, 2 = med, or 1 = low");
+    alert("Issues was not added");
+    } else {
+        issues.push(issueFields);
+        alert("Issue has been added");
+        issuesList.insertAdjacentHTML("afterend", 
+        "<p>" + "Ticket ID: " + issueFields.id +"</p>" +
+        "<p>" + "Ticket Name: " + issueFields.name +"</p>" +
+        "<p>" + "Description: " + issueFields.description +"</p>" +
+        "<p>" + "Severity: " + issueFields.severity +"</p>" +
+        "<p>" + "Status: " + issueFields.status +"</p>" +
+        "<p>" + "Assignment: " + issueFields.assignment +"</p>" +
+        "<hr>"
+        );
+    }
+
+
+})
 
 let IssueForm = (nameOfissue, description, issueSeverity) => {
     const issueName = nameOfissue

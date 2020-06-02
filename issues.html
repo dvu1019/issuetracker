@@ -9,9 +9,20 @@
 <body>
     <div id="app"> 
         <h1 id ="myHeading"> Issues Tracker </h1>
-        <button id="createIssues" type="submit-button">Create Issue</button>
-        <button id="listIssuesButton" type="submit-button">List Issues</button>
     </div>
+<br>
+    <div>
+        <form id = "ticketForm">
+            <label for = "ticketName"> Ticket Name </label>
+            <input type = "text" id= "ticketName" name = "ticketName" value="example" >
+            <label for = "ticketDescription"> Description </label>
+            <input type = "text" id= "ticketDescription" name = "ticketDescription" value="example" >
+            <label for = "ticketSeverity"> Severity </label>
+            <input type = "text" id= "ticketSeverity" name = "ticketSeverity" value="example" >
+            <input id = "submitButton" type="button" value="Submit">
+        </form>
+    </div>
+
     <ul id="my-list"> </ul>
 
 
