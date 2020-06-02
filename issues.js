@@ -4,7 +4,7 @@ const issuesList = document.getElementById('issuesList');
 let issues = [];   
 let closeIssues = [];
 
-listIssuesButton.addEventListener('click', () => {
+window.addEventListener('load', () => {
     for(let things of issues) {
         issuesList.insertAdjacentHTML("afterend", 
         "<p>" + "Ticket ID: " + things.id +"</p>" +
@@ -21,7 +21,7 @@ listIssuesButton.addEventListener('click', () => {
 let IssueForm = (nameOfissue, description, issueSeverity) => {
     const issueName = nameOfissue
     const issueDescription = description
-    const severity = issueSeverity.toLowerCase();
+    const severity = issueSeverity;
 
     const issueFields = {
         id : issues.length + 1,
@@ -139,6 +139,29 @@ const assignTicket = (id , assignment) => {
     console.log("****** New Assignment was Added *********")
     console.log(issues[indexOfIssue]);
 }
+
+const createIssuesByNumber = (num) => {
+    for(i = 0; i < num; i++) {
+        IssueForm(randomName, randomDescription, randomNumber)
+    }
+}
+
+let randomDescription = () => {
+    Math.random().toString(36).substring(7);
+    return;
+}
+
+let randomName = () => {
+    Math.random().toString(36).substring(30);
+    return;
+}
+
+let randomNumber = () => {
+    Math.floor((Math.random() * 3) + 1);
+    return;
+}
+
+
 
 IssueForm("Houston", "Houston we have a problem", "1")
 IssueForm("Austin", "Austin we have a problem", "Ben a bitch")
